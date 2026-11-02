@@ -1,0 +1,11 @@
+{
+  "name": "eric-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
