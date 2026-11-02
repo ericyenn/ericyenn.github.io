@@ -50,6 +50,7 @@ export function render(): void {
  }
  header.append(nav);
  const main = element("main"); main.id = "main";
+ if (id === "blog") main.classList.add("blog-page");
  main.append(element("h1",page.heading));
  for (const paragraph of page.paragraphs) {
   const p = element("p");
