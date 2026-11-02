@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json && mkdir -p blog projects && cp index.html blog/index.html && cp index.html projects/index.html"
+    "build": "tsc -p tsconfig.json && node scripts/version-assets.mjs"
   },
   "devDependencies": {
     "typescript": "5.9.3"

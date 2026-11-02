@@ -9,3 +9,5 @@ Install Node.js, run `npm install`, then `npm run build`. Strict TypeScript comp
 Routes: `/`, `/blog/`, `/projects/`. Each directory has a minimal entry file so direct links, refresh, and browser back/forward work on GitHub Pages. The build copies the entry file into those directories. Previously shared hash links redirect to the clean routes.
 
 The Geist Sans font is self-hosted; license: `assets/OFL.txt`.
+
+The build generates content-hashed JavaScript assets so browsers fetch changed content rather than retaining an older cached module.
