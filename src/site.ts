@@ -2,7 +2,8 @@ import { styles } from "./styles.js";
 type PageId = "home" | "blog" | "projects";
 interface Link { label: string; href: string }
 interface Paragraph { segments: (string | Link)[] }
-interface Page { title: string; heading: string; paragraphs: Paragraph[] }
+interface Project { name: string; href: string; description: string; details: string }
+interface Page { title: string; heading: string; paragraphs: Paragraph[]; projects?: Project[] }
 const pages: Record<PageId, Page> = {
  home: {title:"Eric",heading:"Hi! I'm Eric",paragraphs:[
   {segments:["Junior @ ",{label:"Cornell",href:"https://www.cornell.edu/"}," studying CS & ECE. Currently researching efficient ML at ",{label:"Relax ML Lab",href:"https://relax-ml.cs.cornell.edu/"}," under ",{label:"Chris De Sa",href:"https://www.cs.cornell.edu/~cdesa/"},"."]},
@@ -10,7 +11,9 @@ const pages: Record<PageId, Page> = {
   {segments:["Feel free to reach out if you have any questions!"]}
  ]},
  blog: {title:"Blog — Eric",heading:"Blog",paragraphs:[{segments:["coming soon!!"]}]},
- projects: {title:"Projects — Eric",heading:"Projects",paragraphs:[{segments:["No projects listed yet."]}]}
+ projects: {title:"Projects — Eric",heading:"Projects",paragraphs:[],projects:[
+  {name:"bedtime-LM",href:"https://github.com/Justee21/bedtime-LM",description:"A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.",details:"PyTorch · Transformers · Mixture of experts"}
+ ]}
 };
 const contacts: Link[] = [
  {label:"GitHub",href:"https://github.com/ericyenn"},
@@ -38,8 +41,8 @@ export function render(): void {
  const layout = element("div"); layout.className = "page";
  const header = element("header");
  const nav = element("nav"); nav.setAttribute("aria-label","Main navigation");
- const items: {id: PageId;label: string}[] = id === "home" ? [] : [{id:"home",label:"Home"}];
- items.push({id:"blog",label:"Blog"},{id:"projects",label:"Projects"});
+ const items: {id: PageId;label: string}[] = id === "home" ? [] : [{id:"home",label:"home"}];
+ items.push({id:"blog",label:"blog"},{id:"projects",label:"projects"});
  for (const item of items) {
   const node = link({label:item.label,href:item.id === "home" ? "/" : "/"+item.id+"/"});
   if (item.id === id) node.setAttribute("aria-current","page");
@@ -52,6 +55,17 @@ export function render(): void {
   const p = element("p");
   for (const segment of paragraph.segments) p.append(typeof segment === "string" ? document.createTextNode(segment) : link(segment));
   main.append(p);
+ }
+ if (page.projects) {
+  const list = element("ol"); list.className = "project-list";
+  for (const project of page.projects) {
+   const item = element("li"); item.className = "project";
+   const title = element("h2"); title.append(link({label:project.name,href:project.href}));
+   const description = element("p",project.description);
+   const details = element("p",project.details); details.className = "project-details";
+   item.append(title,description,details); list.append(item);
+  }
+  main.append(list);
  }
  const footer = element("footer"); footer.setAttribute("aria-label","Contact");
  for (const item of contacts) footer.append(link(item));

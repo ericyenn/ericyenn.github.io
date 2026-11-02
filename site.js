@@ -6,7 +6,9 @@ const pages = {
             { segments: ["Feel free to reach out if you have any questions!"] }
         ] },
     blog: { title: "Blog — Eric", heading: "Blog", paragraphs: [{ segments: ["coming soon!!"] }] },
-    projects: { title: "Projects — Eric", heading: "Projects", paragraphs: [{ segments: ["No projects listed yet."] }] }
+    projects: { title: "Projects — Eric", heading: "Projects", paragraphs: [], projects: [
+            { name: "bedtime-LM", href: "https://github.com/Justee21/bedtime-LM", description: "A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.", details: "PyTorch · Transformers · Mixture of experts" }
+        ] }
 };
 const contacts = [
     { label: "GitHub", href: "https://github.com/ericyenn" },
@@ -37,8 +39,8 @@ export function render() {
     const header = element("header");
     const nav = element("nav");
     nav.setAttribute("aria-label", "Main navigation");
-    const items = id === "home" ? [] : [{ id: "home", label: "Home" }];
-    items.push({ id: "blog", label: "Blog" }, { id: "projects", label: "Projects" });
+    const items = id === "home" ? [] : [{ id: "home", label: "home" }];
+    items.push({ id: "blog", label: "blog" }, { id: "projects", label: "projects" });
     for (const item of items) {
         const node = link({ label: item.label, href: item.id === "home" ? "/" : "/" + item.id + "/" });
         if (item.id === id)
@@ -54,6 +56,22 @@ export function render() {
         for (const segment of paragraph.segments)
             p.append(typeof segment === "string" ? document.createTextNode(segment) : link(segment));
         main.append(p);
+    }
+    if (page.projects) {
+        const list = element("ol");
+        list.className = "project-list";
+        for (const project of page.projects) {
+            const item = element("li");
+            item.className = "project";
+            const title = element("h2");
+            title.append(link({ label: project.name, href: project.href }));
+            const description = element("p", project.description);
+            const details = element("p", project.details);
+            details.className = "project-details";
+            item.append(title, description, details);
+            list.append(item);
+        }
+        main.append(list);
     }
     const footer = element("footer");
     footer.setAttribute("aria-label", "Contact");
