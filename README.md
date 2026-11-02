@@ -6,6 +6,6 @@ The entire UI is authored in TypeScript: `src/site.ts` creates the content, navi
 
 Install Node.js, run `npm install`, then `npm run build`. Strict TypeScript compilation generates `site.js` and `styles.js`. Commit these generated files with source changes. GitHub Pages serves the repository root; `index.html` is the minimal browser entry file. Browsers execute the compiled JavaScript, not TypeScript directly.
 
-Routes: `/#home`, `/#blog`, `/#projects`. Hash routing supports direct links and browser back/forward on GitHub Pages.
+Routes: `/`, `/blog/`, `/projects/`. Each directory has a minimal entry file so direct links, refresh, and browser back/forward work on GitHub Pages. The build copies the entry file into those directories. Previously shared hash links redirect to the clean routes.
 
 The Geist Sans font is self-hosted; license: `assets/OFL.txt`.

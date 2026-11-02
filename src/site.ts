@@ -27,12 +27,12 @@ function link(item: Link): HTMLAnchorElement {
  node.href = item.href;
  return node;
 }
-export function getPage(hash: string): PageId {
- const id = hash.replace(/^#\/?/,"");
+export function getPage(pathname: string): PageId {
+ const id = pathname.replace(/\/index\.html$/, "").replace(/^\/+|\/+$/g, "");
  return id === "blog" || id === "projects" ? id : "home";
 }
 export function render(): void {
- const id = getPage(window.location.hash);
+ const id = getPage(window.location.pathname);
  const page = pages[id];
  document.title = page.title;
  const layout = element("div"); layout.className = "page";
@@ -41,7 +41,7 @@ export function render(): void {
  const items: {id: PageId;label: string}[] = id === "home" ? [] : [{id:"home",label:"Home"}];
  items.push({id:"blog",label:"Blog"},{id:"projects",label:"Projects"});
  for (const item of items) {
-  const node = link({label:item.label,href:item.id === "home" ? "#home" : "#"+item.id});
+  const node = link({label:item.label,href:item.id === "home" ? "/" : "/"+item.id+"/"});
   if (item.id === id) node.setAttribute("aria-current","page");
   nav.append(node);
  }
@@ -59,5 +59,9 @@ export function render(): void {
  document.body.replaceChildren(layout);
 }
 const style = element("style", styles); document.head.append(style);
-window.addEventListener("hashchange",()=>{render();window.scrollTo(0,0);});
+// Keep previously shared hash links working while canonical links use directories.
+const legacyPage = window.location.hash.replace(/^#\/?/, "");
+if (legacyPage === "blog" || legacyPage === "projects") {
+ window.location.replace("/" + legacyPage + "/");
+}
 render();
