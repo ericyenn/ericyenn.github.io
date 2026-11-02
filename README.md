@@ -1,9 +1,11 @@
 # Eric’s portfolio
 
-Source is TypeScript in `src/site.ts`, with styles in `style.css` and a self-hosted Geist Sans font. Shared navigation and the contact footer are rendered by TypeScript at build time.
+The entire UI is authored in TypeScript: `src/site.ts` creates the content, navigation and contact footer with DOM APIs; `src/styles.ts` contains the styles. There are no separate HTML page templates or CSS files.
 
 ## Build
 
-With Node.js installed, run `npm install` and `npm run build`. The build checks TypeScript and generates `index.html`, `blog.html`, and `projects.html` at the repository root. Commit those generated files with source changes; GitHub Pages serves them from `main` / root without a server.
+Install Node.js, run `npm install`, then `npm run build`. Strict TypeScript compilation generates `site.js` and `styles.js`. Commit these generated files with source changes. GitHub Pages serves the repository root; `index.html` is the minimal browser entry file. Browsers execute the compiled JavaScript, not TypeScript directly.
 
-The contact footer sits at the bottom of short pages and follows the content on long pages. Font license: `assets/OFL.txt`.
+Routes: `/#home`, `/#blog`, `/#projects`. Hash routing supports direct links and browser back/forward on GitHub Pages.
+
+The Geist Sans font is self-hosted; license: `assets/OFL.txt`.
