@@ -12,7 +12,7 @@ const pages: Record<PageId, Page> = {
  ]},
  blog: {title:"Blog — Eric",heading:"Blog",paragraphs:[{segments:["coming soon!!"]}]},
  projects: {title:"Projects — Eric",heading:"Projects",paragraphs:[],projects:[
-  {name:"bedtime-LM",href:"https://github.com/Justee21/bedtime-LM",description:"A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.",details:"PyTorch · Transformers · Mixture of experts"}
+  {name:"bedtime-LM",href:"https://github.com/Justee21/bedtime-LM",description:"A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.",details:"Oct 2026"}
  ]}
 };
 const contacts: Link[] = [
@@ -31,7 +31,7 @@ function link(item: Link): HTMLAnchorElement {
  return node;
 }
 export function getPage(pathname: string): PageId {
- const id = pathname.replace(/\/index\.html$/, "").replace(/^\/+|\/+$/g, "");
+ const id = pathname.replace(/\/index\.html$/, "").replace(/\.html$/, "").replace(/^\/+|\/+$/g, "");
  return id === "blog" || id === "projects" ? id : "home";
 }
 export function render(): void {
@@ -79,3 +79,7 @@ if (legacyPage === "blog" || legacyPage === "projects") {
  window.location.replace("/" + legacyPage + "/");
 }
 render();
+
+// Redirect old filename links to the same shared clean routes.
+const oldPath = window.location.pathname.match(/^\/(blog|projects)\.html$/);
+if (oldPath) window.location.replace("/" + oldPath[1] + "/");
