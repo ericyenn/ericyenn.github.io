@@ -2,7 +2,7 @@ import { styles } from "./styles.js";
 type PageId = "home" | "blog" | "projects";
 interface Link { label: string; href: string }
 interface Paragraph { segments: (string | Link)[] }
-interface Project { name: string; href: string; description: string; details: string }
+interface Project { name: string; href: string; description: (string | Link)[]; details: string }
 interface Page { title: string; heading: string; paragraphs: Paragraph[]; projects?: Project[] }
 const pages: Record<PageId, Page> = {
  home: {title:"Eric",heading:"Hi! I'm Eric",paragraphs:[
@@ -12,7 +12,7 @@ const pages: Record<PageId, Page> = {
  ]},
  blog: {title:"Blog — Eric",heading:"Blog",paragraphs:[{segments:["coming soon!!"]}]},
  projects: {title:"Projects — Eric",heading:"Projects",paragraphs:[],projects:[
-  {name:"bedtime-LM",href:"https://github.com/Justee21/bedtime-LM",description:"A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.",details:"Oct 2026"}
+  {name:"bedtime-LM",href:"https://github.com/Justee21/bedtime-LM",description:["A transformer language model built from scratch in PyTorch with ", {label:"Justin Roberts",href:"https://github.com/Justee21"}, ", trained on TinyStories to generate short stories."],details:"Oct 2026"}
  ]}
 };
 const contacts: Link[] = [
@@ -62,7 +62,8 @@ export function render(): void {
   for (const project of page.projects) {
    const item = element("li"); item.className = "project";
    const title = element("h2"); title.append(link({label:project.name,href:project.href}));
-   const description = element("p",project.description);
+   const description = element("p");
+   for (const segment of project.description) description.append(typeof segment === "string" ? document.createTextNode(segment) : link(segment));
    const details = element("p",project.details); details.className = "project-details";
    item.append(title,description,details); list.append(item);
   }

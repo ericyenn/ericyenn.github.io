@@ -7,7 +7,7 @@ const pages = {
         ] },
     blog: { title: "Blog — Eric", heading: "Blog", paragraphs: [{ segments: ["coming soon!!"] }] },
     projects: { title: "Projects — Eric", heading: "Projects", paragraphs: [], projects: [
-            { name: "bedtime-LM", href: "https://github.com/Justee21/bedtime-LM", description: "A transformer language model built from scratch in PyTorch with Justin Roberts, trained on TinyStories to generate short stories.", details: "Oct 2026" }
+            { name: "bedtime-LM", href: "https://github.com/Justee21/bedtime-LM", description: ["A transformer language model built from scratch in PyTorch with ", {label:"Justin Roberts",href:"https://github.com/Justee21"}, ", trained on TinyStories to generate short stories."], details: "Oct 2026" }
         ] }
 };
 const contacts = [
@@ -67,7 +67,8 @@ export function render() {
             item.className = "project";
             const title = element("h2");
             title.append(link({ label: project.name, href: project.href }));
-            const description = element("p", project.description);
+            const description = element("p");
+            for (const segment of project.description) description.append(typeof segment === "string" ? document.createTextNode(segment) : link(segment));
             const details = element("p", project.details);
             details.className = "project-details";
             item.append(title, description, details);
